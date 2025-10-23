@@ -1,0 +1,106 @@
+/* Base layout for Static Ruby */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #f8f9fb;
+  color: #111;
+}
+
+a {
+  color: #0366d6;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  min-height: 100vh;
+}
+
+.layout__sidebar {
+  background: #111827;
+  color: #f8f9fb;
+  padding: 2rem;
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.layout__header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.layout__header p {
+  margin: 0.5rem 0 1.5rem;
+  color: rgba(248, 249, 251, 0.7);
+}
+
+.layout__menu {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.menu-section h2 {
+  margin: 0;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(248, 249, 251, 0.6);
+}
+
+.menu-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.menu-section a {
+  color: #f8f9fb;
+  display: block;
+  padding: 0.25rem 0;
+}
+
+.menu-section a.is-active {
+  font-weight: 600;
+  color: #38bdf8;
+}
+
+.layout__content {
+  padding: 3rem;
+  background: white;
+}
+
+.layout__content article {
+  max-width: 720px;
+}
+
+.layout__content h1 {
+  font-size: 2.25rem;
+  margin-top: 0;
+}
+
+.layout__content p {
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.layout__content pre {
+  background: #1f2937;
+  color: #f8f9fb;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow: auto;
+}

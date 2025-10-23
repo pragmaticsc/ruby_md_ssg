@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= title %> · Static Ruby</title>
+    <% if meta_description && !meta_description.empty? %>
+      <meta name="description" content="<%= meta_description %>" />
+    <% end %>
+    <link rel="stylesheet" href="/assets/style.css" />
+    <script defer src="/assets/app.js"></script>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="layout__sidebar">
+        <header class="layout__header">
+          <h1>Static Ruby</h1>
+          <p>Markdown to static site with minimal tooling.</p>
+        </header>
+        <nav class="layout__menu">
+          <% menu.sections.each do |section| %>
+            <section class="menu-section">
+              <h2><%= section.title %></h2>
+              <ul>
+                <% section.links.each do |link| %>
+                  <li>
+                    <a href="<%= link.route %>"><%= link.label %></a>
+                  </li>
+                <% end %>
+              </ul>
+            </section>
+          <% end %>
+        </nav>
+      </aside>
+      <main class="layout__content">
+        <article>
+          <%= body_html %>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

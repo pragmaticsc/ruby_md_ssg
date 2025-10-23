@@ -1,0 +1,10 @@
+---
+sections:
+- title: Home
+  links:
+  - label: Home
+    route: "/"
+- title: Ideas
+  links:
+  - label: Government
+    route: "/ideas/government"

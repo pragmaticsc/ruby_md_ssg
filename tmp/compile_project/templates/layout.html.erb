@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title><%= title %></title>
+  <% if meta_description && !meta_description.empty? %>
+    <meta name="description" content="<%= meta_description %>">
+  <% end %>
+</head>
+<body>
+  <nav>
+    <% menu.sections.each do |section| %>
+      <section>
+        <h2><%= section.title %></h2>
+        <ul>
+          <% section.links.each do |link| %>
+            <li><a href="<%= link.route %>"><%= link.label %></a></li>
+          <% end %>
+        </ul>
+      </section>
+    <% end %>
+  </nav>
+  <main>
+    <%= body_html %>
+  </main>
+</body>
+</html>

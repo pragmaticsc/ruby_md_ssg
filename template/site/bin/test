@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+env = {}
+env['TEST'] = ENV['TEST'] if ENV['TEST']
+env['TESTOPTS'] = ENV['TESTOPTS'] if ENV['TESTOPTS']
+
+exec(env, 'bundle', 'exec', 'rake', 'test')
