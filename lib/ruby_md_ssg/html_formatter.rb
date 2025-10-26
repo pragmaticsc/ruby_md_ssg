@@ -2,7 +2,7 @@
 
 require 'nokogiri'
 
-module StaticRuby
+module RubyMdSsg
   class HtmlFormatter
     def initialize(indent: 2)
       @indent = indent

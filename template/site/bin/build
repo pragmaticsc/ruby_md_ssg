@@ -3,4 +3,4 @@
 
 require 'static_ruby'
 
-StaticRuby::CLI.start(['build', *ARGV])
+RubyMdSsg::CLI.start(['build', *ARGV])

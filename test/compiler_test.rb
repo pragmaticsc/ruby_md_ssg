@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-module StaticRuby
+module RubyMdSsg
   class CompilerTest < Minitest::Test
     def setup
       @project_root = File.join(TEST_TMP_DIR, 'compile_project')
@@ -47,10 +47,10 @@ module StaticRuby
       write_doc('index.md', <<~MD)
         ---
         title: Home
-        description: Landing page for Static Ruby.
+        description: Landing page for Ruby MD SSG.
         ---
         # Home
-        Welcome to Static Ruby.
+        Welcome to Ruby MD SSG.
       MD
       write_doc('ideas/story.md', '# Story')
 
@@ -60,7 +60,7 @@ module StaticRuby
       assert File.exist?(File.join(@build_dir, 'index.html'))
       assert File.exist?(File.join(@build_dir, 'ideas', 'story', 'index.html'))
       assert_includes index_html, '<nav'
-      assert_includes index_html, '<meta name="description" content="Landing page for Static Ruby."'
+      assert_includes index_html, '<meta name="description" content="Landing page for Ruby MD SSG."'
       assert_equal 1, index_html.scan('<h1').count
       assert File.exist?(File.join(@build_dir, 'assets', 'style.css'))
       assert File.exist?(File.join(@build_dir, 'assets', 'app.js'))

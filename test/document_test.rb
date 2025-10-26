@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-module StaticRuby
+module RubyMdSsg
   class DocumentTest < Minitest::Test
     def setup
       @docs_dir = File.join(TEST_TMP_DIR, 'docs')
@@ -45,7 +45,7 @@ module StaticRuby
       path = write_doc('guides/setup.md', <<~MD)
         ---
         title: Setup Guide
-        description: Prepare your environment for Static Ruby.
+        description: Prepare your environment for Ruby MD SSG.
         ---
         # Setup Guide
         Content body.
@@ -53,7 +53,7 @@ module StaticRuby
 
       Paths.stub(:docs_dir, @docs_dir) do
         document = Document.new(path)
-        assert_equal 'Prepare your environment for Static Ruby.', document.meta_description
+        assert_equal 'Prepare your environment for Ruby MD SSG.', document.meta_description
       end
     end
 

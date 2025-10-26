@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-module StaticRuby
+module RubyMdSsg
   class MenuConfigTest < Minitest::Test
     def setup
       @docs_dir = File.join(TEST_TMP_DIR, 'menu_docs')

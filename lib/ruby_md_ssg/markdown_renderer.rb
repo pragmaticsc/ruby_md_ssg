@@ -2,7 +2,7 @@
 
 require 'kramdown'
 
-module StaticRuby
+module RubyMdSsg
   class MarkdownRenderer
     def render(markdown)
       Kramdown::Document.new(markdown).to_html

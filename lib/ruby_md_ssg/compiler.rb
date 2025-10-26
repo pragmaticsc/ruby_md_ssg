@@ -8,7 +8,7 @@ require_relative 'markdown_renderer'
 require_relative 'layout_renderer'
 require_relative 'html_formatter'
 
-module StaticRuby
+module RubyMdSsg
   class Compiler
     def initialize(docs_dir: Paths.docs_dir, build_dir: Paths.build_dir, assets_dir: Paths.assets_dir, menu_path: Paths.menu_config)
       @docs_dir = docs_dir

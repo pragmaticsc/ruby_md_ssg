@@ -4,7 +4,7 @@ require 'optparse'
 require 'fileutils'
 require 'erb'
 
-module StaticRuby
+module RubyMdSsg
   class CLI
     TEMPLATE_DIR = File.expand_path('../../template/site', __dir__)
 
@@ -28,7 +28,7 @@ module StaticRuby
       when 'menu'
         handle_menu(argv)
       when 'version', '--version', '-v'
-        puts "Static Ruby #{StaticRuby::VERSION}"
+        puts "Ruby MD SSG #{RubyMdSsg::VERSION}"
       else
         puts usage
         command ? exit(1) : exit(0)
@@ -44,7 +44,7 @@ module StaticRuby
         Usage: static_ruby <command> [options]
 
         Commands:
-          new NAME           # Scaffold a new Static Ruby project
+          new NAME           # Scaffold a new Ruby MD SSG project
           build              # Generate the site into the build directory
           serve              # Serve the site locally with rebuilds
           menu               # Regenerate docs/menu.yml from docs/
@@ -69,18 +69,18 @@ module StaticRuby
 
       destination = options[:path] || File.expand_path(project_name)
       Scaffold.new(project_name, destination).run
-      puts "Created Static Ruby project at #{destination}"
+      puts "Created Ruby MD SSG project at #{destination}"
     end
 
     def handle_build(args)
-      StaticRuby::Paths.reset!
-      StaticRuby::Paths.root = Dir.pwd
+      RubyMdSsg::Paths.reset!
+      RubyMdSsg::Paths.root = Dir.pwd
       options = build_options(args)
 
-      generator = StaticRuby::MenuGenerator.new(docs_dir: options[:docs], menu_path: options[:menu])
+      generator = RubyMdSsg::MenuGenerator.new(docs_dir: options[:docs], menu_path: options[:menu])
       generator.generate
 
-      compiler = StaticRuby::Compiler.new(
+      compiler = RubyMdSsg::Compiler.new(
         docs_dir: options[:docs],
         build_dir: options[:build],
         assets_dir: options[:assets],
@@ -90,18 +90,18 @@ module StaticRuby
     end
 
     def handle_menu(args)
-      StaticRuby::Paths.reset!
-      StaticRuby::Paths.root = Dir.pwd
+      RubyMdSsg::Paths.reset!
+      RubyMdSsg::Paths.root = Dir.pwd
       options = build_options(args)
-      generator = StaticRuby::MenuGenerator.new(docs_dir: options[:docs], menu_path: options[:menu])
+      generator = RubyMdSsg::MenuGenerator.new(docs_dir: options[:docs], menu_path: options[:menu])
       generator.generate
     end
 
     def handle_serve(args)
-      StaticRuby::Paths.reset!
-      StaticRuby::Paths.root = Dir.pwd
+      RubyMdSsg::Paths.reset!
+      RubyMdSsg::Paths.root = Dir.pwd
       options = build_options(args)
-      StaticRuby::Server.start(options)
+      RubyMdSsg::Server.start(options)
     end
 
     def build_options(args)
@@ -119,10 +119,10 @@ module StaticRuby
       end
       parser.parse!(args)
 
-      options[:docs] ||= StaticRuby::Paths.docs_dir
-      options[:build] ||= StaticRuby::Paths.build_dir
-      options[:menu] ||= StaticRuby::Paths.menu_config
-      options[:assets] ||= StaticRuby::Paths.assets_dir
+      options[:docs] ||= RubyMdSsg::Paths.docs_dir
+      options[:build] ||= RubyMdSsg::Paths.build_dir
+      options[:menu] ||= RubyMdSsg::Paths.menu_config
+      options[:assets] ||= RubyMdSsg::Paths.assets_dir
       options.delete_if { |_key, value| value.nil? }
     end
 
@@ -176,7 +176,7 @@ module StaticRuby
         BindingStruct.new(
           project_name: project_name,
           module_name: module_name,
-          gem_version: StaticRuby::VERSION,
+          gem_version: RubyMdSsg::VERSION,
           helpers: HelperMethods.new(project_name)
         ).get_binding
       end

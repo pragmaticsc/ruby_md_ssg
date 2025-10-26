@@ -1,6 +1,6 @@
-# Static Ruby Launch Notes
+# Ruby MD SSG Launch Notes
 
-Welcome to the first release of Static Ruby. The goal is to build static sites with a tiny toolchain.
+Welcome to the first release of Ruby MD SSG. The goal is to build static sites with a tiny toolchain.
 
 ## Highlights
 

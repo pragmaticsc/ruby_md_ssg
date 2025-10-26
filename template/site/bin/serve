@@ -3,4 +3,4 @@
 
 require 'static_ruby'
 
-StaticRuby::CLI.start(['serve', *ARGV])
+RubyMdSsg::CLI.start(['serve', *ARGV])

@@ -3,7 +3,7 @@
 require_relative 'paths'
 require_relative 'document'
 
-module StaticRuby
+module RubyMdSsg
   class DocumentFinder
     def initialize(docs_dir: Paths.docs_dir)
       @docs_dir = docs_dir

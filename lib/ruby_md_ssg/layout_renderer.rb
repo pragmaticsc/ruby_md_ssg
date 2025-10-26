@@ -3,7 +3,7 @@
 require 'erb'
 require_relative 'paths'
 
-module StaticRuby
+module RubyMdSsg
   class LayoutRenderer
     def initialize(template_path: default_template_path)
       @template_path = template_path

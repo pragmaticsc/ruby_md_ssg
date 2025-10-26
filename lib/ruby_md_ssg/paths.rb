@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-module StaticRuby
+module RubyMdSsg
   module Paths
     module_function
 
     def root
       @root ||= begin
-        env_root = ENV['STATIC_RUBY_ROOT']
+        env_root = ENV['RUBY_MD_SSG_ROOT']
         if env_root && !env_root.empty?
           File.expand_path(env_root)
         else

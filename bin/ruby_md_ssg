@@ -4,9 +4,9 @@
 lib_path = File.expand_path('../lib', __dir__)
 $LOAD_PATH.unshift(lib_path) if Dir.exist?(lib_path)
 
-require 'static_ruby'
+require 'ruby_md_ssg'
 
-StaticRuby::Paths.reset!
-StaticRuby::Paths.root = Dir.pwd
+RubyMdSsg::Paths.reset!
+RubyMdSsg::Paths.root = Dir.pwd
 
-StaticRuby::CLI.start(ARGV)
+RubyMdSsg::CLI.start(ARGV)

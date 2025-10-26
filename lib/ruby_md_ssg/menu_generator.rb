@@ -6,7 +6,7 @@ require_relative 'paths'
 require_relative 'document_finder'
 require_relative 'menu_config'
 
-module StaticRuby
+module RubyMdSsg
   class MenuGenerator
     def initialize(docs_dir: Paths.docs_dir, menu_path: Paths.menu_config)
       @docs_dir = docs_dir
@@ -73,7 +73,7 @@ module StaticRuby
         merged_links = existing_section.links.map { |link| existing_links[normalized(link.route)] }
         additional_links = existing_links.values.reject { |link| merged_links.include?(link) }
         merged_links += additional_links
-        StaticRuby::MenuConfig::Section.new(
+        RubyMdSsg::MenuConfig::Section.new(
           title: existing_section.title,
           links: merged_links
         )

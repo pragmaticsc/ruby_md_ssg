@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-module StaticRuby
+module RubyMdSsg
   class CLITest < Minitest::Test
     def setup
       @tmp_root = Dir.mktmpdir('static_ruby_cli', TEST_TMP_DIR)
@@ -13,7 +13,7 @@ module StaticRuby
     def test_scaffold_generates_project_structure
       destination = File.join(@tmp_root, 'demo-site')
 
-      StaticRuby::CLI::Scaffold.new('demo-site', destination).run
+      RubyMdSsg::CLI::Scaffold.new('demo-site', destination).run
 
       gemfile = File.read(File.join(destination, 'Gemfile'))
       index = File.read(File.join(destination, 'docs', 'index.md'))

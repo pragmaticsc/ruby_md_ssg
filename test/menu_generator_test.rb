@@ -1,7 +1,7 @@
 require 'yaml'
 require_relative 'test_helper'
 
-module StaticRuby
+module RubyMdSsg
   class MenuGeneratorTest < Minitest::Test
     def setup
       @docs_dir = File.join(TEST_TMP_DIR, 'generator_docs')

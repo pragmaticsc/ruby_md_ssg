@@ -3,7 +3,7 @@
 require 'yaml'
 require_relative 'paths'
 
-module StaticRuby
+module RubyMdSsg
   class MenuConfig
     Section = Struct.new(:title, :links, keyword_init: true)
     Link = Struct.new(:label, :route, keyword_init: true)

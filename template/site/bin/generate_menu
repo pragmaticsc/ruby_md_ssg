@@ -3,4 +3,4 @@
 
 require 'static_ruby'
 
-StaticRuby::CLI.start(['menu', *ARGV])
+RubyMdSsg::CLI.start(['menu', *ARGV])

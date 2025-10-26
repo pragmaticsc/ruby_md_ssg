@@ -1,6 +1,6 @@
-# Static Ruby
+# Ruby MD SSG
 
-The `static_ruby` gem exposes a command-line interface for building and serving markdown-driven static sites.
+The `ruby-md-ssg` gem exposes a command-line interface for building and serving markdown-driven static sites.
 
 ## Development
 
@@ -11,7 +11,7 @@ bundle exec ruby bin/test
 
 ## CLI
 
-- `static_ruby new my-site` — scaffold a new project using the bundled template
-- `static_ruby build` — regenerate the site into `build/`
-- `static_ruby serve` — serve the site locally with automatic rebuilds
-- `static_ruby menu` — refresh `docs/menu.yml`
+- `ruby_md_ssg new my-site` — scaffold a new project using the bundled template
+- `ruby_md_ssg build` — regenerate the site into `build/`
+- `ruby_md_ssg serve` — serve the site locally with automatic rebuilds
+- `ruby_md_ssg menu` — refresh `docs/menu.yml`

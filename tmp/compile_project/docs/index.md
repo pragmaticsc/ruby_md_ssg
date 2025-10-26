@@ -1,6 +1,6 @@
 ---
 title: Home
-description: Landing page for Static Ruby.
+description: Landing page for Ruby MD SSG.
 ---
 # Home
-Welcome to Static Ruby.
+Welcome to Ruby MD SSG.

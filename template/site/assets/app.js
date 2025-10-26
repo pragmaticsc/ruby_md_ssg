@@ -1,4 +1,4 @@
-// Base script for Static Ruby
+// Base script for Ruby MD SSG
 document.addEventListener('DOMContentLoaded', () => {
   const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
   document

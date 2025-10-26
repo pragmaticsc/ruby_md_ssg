@@ -3,7 +3,7 @@
 require 'webrick'
 require 'digest'
 
-module StaticRuby
+module RubyMdSsg
   class Server
     class << self
       def start(options = {})

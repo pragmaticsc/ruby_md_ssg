@@ -3,7 +3,7 @@
 require 'yaml'
 require_relative 'paths'
 
-module StaticRuby
+module RubyMdSsg
   # Represents a markdown document and its derived site metadata.
   class Document
     attr_reader :source_path, :docs_dir
