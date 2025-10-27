@@ -23,7 +23,8 @@ module RubyMdSsg
       Paths.stub(:docs_dir, @docs_dir) do
         document = Document.new(path)
         assert_equal '/ideas/government', document.route
-        assert_equal File.join(Paths.build_dir, 'ideas', 'government', 'index.html'), document.output_path
+        expected_path = File.join(Paths.build_dir, 'ideas', 'government', 'index.html')
+        assert_equal expected_path, document.output_path
       end
     end
 

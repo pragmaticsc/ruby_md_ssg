@@ -19,7 +19,7 @@ module RubyMdSsg
       menu = MenuConfig.from_documents(documents)
 
       section_titles = menu.sections.map(&:title)
-      assert_equal ['Guides', 'Home', 'Ideas'], section_titles.sort
+      assert_equal %w[Guides Home Ideas], section_titles.sort
 
       ideas_section = menu.sections.find { |section| section.title == 'Ideas' }
       assert_equal ['/ideas/government', '/ideas/participation'], ideas_section.links.map(&:route)
@@ -34,8 +34,8 @@ module RubyMdSsg
       full_path
     end
 
-    def with_stubbed_paths
-      Paths.stub(:docs_dir, @docs_dir) { yield }
+    def with_stubbed_paths(&)
+      Paths.stub(:docs_dir, @docs_dir, &)
     end
   end
 end

@@ -11,7 +11,13 @@ require_relative 'html_formatter'
 
 module RubyMdSsg
   class Compiler
-    def initialize(docs_dir: Paths.docs_dir, build_dir: Paths.build_dir, assets_dir: Paths.assets_dir, menu_path: Paths.menu_config, base_url: nil)
+    def initialize(
+      docs_dir: Paths.docs_dir,
+      build_dir: Paths.build_dir,
+      assets_dir: Paths.assets_dir,
+      menu_path: Paths.menu_config,
+      base_url: nil
+    )
       @docs_dir = docs_dir
       @build_dir = build_dir
       @assets_dir = assets_dir
@@ -39,7 +45,8 @@ module RubyMdSsg
 
     private
 
-    attr_reader :docs_dir, :build_dir, :assets_dir, :menu_path, :markdown, :layout, :html_formatter, :base_url
+    attr_reader :docs_dir, :build_dir, :assets_dir, :menu_path,
+                :markdown, :layout, :html_formatter, :base_url
 
     def purge_build
       FileUtils.rm_rf(build_dir)
@@ -85,12 +92,12 @@ module RubyMdSsg
 
       builder = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
         xml.urlset('xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9') do
-      documents.each do |document|
-        xml.url do
-          xml.loc sitemap_location_for(document.route)
-          xml.lastmod document.last_modified.utc.iso8601
-        end
-      end
+          documents.each do |document|
+            xml.url do
+              xml.loc sitemap_location_for(document.route)
+              xml.lastmod(document.last_modified.utc.iso8601)
+            end
+          end
         end
       end
 

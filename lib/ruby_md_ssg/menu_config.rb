@@ -11,7 +11,7 @@ module RubyMdSsg
     def self.load(path = Paths.menu_config)
       return new([]) unless File.exist?(path)
 
-      raw = YAML.safe_load(File.read(path)) || {}
+      raw = YAML.safe_load_file(path) || {}
       sections = Array(raw['sections']).map do |section|
         Section.new(
           title: section['title'],

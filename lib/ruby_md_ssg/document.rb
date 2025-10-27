@@ -27,7 +27,7 @@ module RubyMdSsg
     def route
       return '/' if relative_path == 'index.md'
 
-      '/' + relative_path.sub(/\.md\z/, '')
+      "/#{relative_path.sub(/\.md\z/, '')}"
     end
 
     def output_dir
@@ -43,9 +43,7 @@ module RubyMdSsg
     end
 
     def title
-      @title ||= begin
-        title_from_frontmatter || title_from_heading || default_title
-      end
+      @title ||= title_from_frontmatter || title_from_heading || default_title
     end
 
     def content
@@ -71,12 +69,14 @@ module RubyMdSsg
     end
 
     def frontmatter
-      @frontmatter ||= begin
-        match = content.match(/\A---\s*\n(.*?)\n---\s*\n/m)
-        return {} unless match
+      return @frontmatter if defined?(@frontmatter)
 
-        YAML.safe_load(match[1]) || {}
-      end
+      match = content.match(/\A---\s*\n(.*?)\n---\s*\n/m)
+      @frontmatter = if match
+                       YAML.safe_load(match[1]) || {}
+                     else
+                       {}
+                     end
     end
 
     private
@@ -87,7 +87,10 @@ module RubyMdSsg
 
     def title_from_heading
       line = content.each_line.find { |l| l.start_with?('# ') }
-      line&.split('# ', 2)&.last&.strip
+      return unless line
+
+      heading = line.split('# ', 2).last
+      heading&.strip
     end
 
     def default_title

@@ -22,7 +22,7 @@ module RubyMdSsg
           auto_build: true,
           watch: true,
           interval: 1.0,
-          base_url: ENV['RUBY_MD_SSG_BASE_URL']
+          base_url: ENV.fetch('RUBY_MD_SSG_BASE_URL', nil)
         }
       end
     end
@@ -68,7 +68,7 @@ module RubyMdSsg
           current = fingerprint
           next if current == last
 
-          puts "[watch] Change detected. Rebuilding..."
+          puts '[watch] Change detected. Rebuilding...'
           build_site
           last = current
         rescue StandardError => e

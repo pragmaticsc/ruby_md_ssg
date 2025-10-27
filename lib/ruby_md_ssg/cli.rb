@@ -6,6 +6,19 @@ require 'erb'
 
 module RubyMdSsg
   class CLI
+    BINDING_STRUCT = Struct.new(
+      :project_name,
+      :module_name,
+      :gem_version,
+      :helpers,
+      keyword_init: true
+    ) do
+      def to_binding
+        binding
+      end
+    end
+    private_constant :BINDING_STRUCT
+
     TEMPLATE_DIR = File.expand_path('../../template/site', __dir__)
 
     def self.start(argv)
@@ -56,7 +69,9 @@ module RubyMdSsg
       options = { path: nil }
       parser = OptionParser.new do |opts|
         opts.banner = 'Usage: ruby_md_ssg new NAME [options]'
-        opts.on('-pPATH', '--path=PATH', 'Target directory (defaults to NAME)') { |path| options[:path] = File.expand_path(path) }
+        opts.on('-pPATH', '--path=PATH', 'Target directory (defaults to NAME)') do |path|
+          options[:path] = File.expand_path(path)
+        end
       end
       parser.parse!(args)
 
@@ -109,15 +124,39 @@ module RubyMdSsg
       options = {}
       parser = OptionParser.new do |opts|
         opts.banner = 'Options:'
-        opts.on('--docs PATH', 'Directory containing markdown docs') { |path| options[:docs] = File.expand_path(path) }
-        opts.on('--build PATH', 'Build output directory') { |path| options[:build] = File.expand_path(path) }
-        opts.on('--menu PATH', 'Menu configuration path') { |path| options[:menu] = File.expand_path(path) }
-        opts.on('--assets PATH', 'Assets directory') { |path| options[:assets] = File.expand_path(path) }
-        opts.on('--base-url URL', 'Base URL for sitemap entries (default: ENV RUBY_MD_SSG_BASE_URL)') { |url| options[:base_url] = url }
-        opts.on('--port PORT', Integer, 'Port for serve command (default: 4000)') { |port| options[:port] = port }
-        opts.on('--[no-]auto-build', 'Serve only: build before starting (default: true)') { |flag| options[:auto_build] = flag }
-        opts.on('--[no-]watch', 'Serve only: watch for changes (default: true)') { |flag| options[:watch] = flag }
-        opts.on('--interval SECONDS', Float, 'Serve only: watch interval (default: 1.0)') { |seconds| options[:interval] = seconds }
+        opts.on('--docs PATH', 'Directory containing markdown docs') do |path|
+          options[:docs] = File.expand_path(path)
+        end
+        opts.on('--build PATH', 'Build output directory') do |path|
+          options[:build] = File.expand_path(path)
+        end
+        opts.on('--menu PATH', 'Menu configuration path') do |path|
+          options[:menu] = File.expand_path(path)
+        end
+        opts.on('--assets PATH', 'Assets directory') do |path|
+          options[:assets] = File.expand_path(path)
+        end
+        opts.on(
+          '--base-url URL',
+          'Base URL for sitemap entries (defaults to ENV RUBY_MD_SSG_BASE_URL)'
+        ) do |url|
+          options[:base_url] = url
+        end
+        opts.on('--port PORT', Integer, 'Port for serve command (default: 4000)') do |port|
+          options[:port] = port
+        end
+        opts.on('--[no-]auto-build', 'Serve only: build before starting (default: true)') do |flag|
+          options[:auto_build] = flag
+        end
+        opts.on('--[no-]watch', 'Serve only: watch for changes (default: true)') do |flag|
+          options[:watch] = flag
+        end
+        opts.on(
+          '--interval SECONDS', Float,
+          'Serve only: watch interval (default: 1.0)'
+        ) do |seconds|
+          options[:interval] = seconds
+        end
       end
       parser.parse!(args)
 
@@ -125,7 +164,7 @@ module RubyMdSsg
       options[:build] ||= RubyMdSsg::Paths.build_dir
       options[:menu] ||= RubyMdSsg::Paths.menu_config
       options[:assets] ||= RubyMdSsg::Paths.assets_dir
-      options[:base_url] ||= ENV['RUBY_MD_SSG_BASE_URL']
+      options[:base_url] ||= ENV.fetch('RUBY_MD_SSG_BASE_URL', nil)
       options.delete_if { |_key, value| value.nil? }
     end
 
@@ -176,12 +215,12 @@ module RubyMdSsg
       end
 
       def binding_context
-        BindingStruct.new(
+        BINDING_STRUCT.new(
           project_name: project_name,
           module_name: module_name,
           gem_version: RubyMdSsg::VERSION,
           helpers: HelperMethods.new(project_name)
-        ).get_binding
+        ).to_binding
       end
 
       def module_name
@@ -192,19 +231,19 @@ module RubyMdSsg
         value.split(/[^a-zA-Z0-9]/).reject(&:empty?).map(&:capitalize).join
       end
 
-      class BindingStruct < Struct.new(:project_name, :module_name, :gem_version, :helpers, keyword_init: true)
-        def get_binding
-          binding
-        end
-      end
-
       class HelperMethods
         def initialize(project_name)
           @project_name = project_name
         end
 
         def human_project_name
-          @human_project_name ||= @project_name.split(/[^a-zA-Z0-9]/).reject(&:empty?).map(&:capitalize).join(' ')
+          @human_project_name ||= begin
+            parts = @project_name
+                    .split(/[^a-zA-Z0-9]/)
+                    .reject(&:empty?)
+                    .map(&:capitalize)
+            parts.join(' ')
+          end
         end
       end
     end

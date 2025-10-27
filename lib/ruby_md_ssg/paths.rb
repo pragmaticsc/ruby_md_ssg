@@ -6,7 +6,7 @@ module RubyMdSsg
 
     def root
       @root ||= begin
-        env_root = ENV['RUBY_MD_SSG_ROOT']
+        env_root = ENV.fetch('RUBY_MD_SSG_ROOT', nil)
         if env_root && !env_root.empty?
           File.expand_path(env_root)
         else

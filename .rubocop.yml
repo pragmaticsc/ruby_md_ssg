@@ -2,18 +2,40 @@ AllCops:
   TargetRubyVersion: 3.2
   NewCops: enable
   Exclude:
-    - 'specifications/fixtures/**/*'
     - 'vendor/**/*'
+    - 'tmp/**/*'
+    - 'pkg/**/*'
 
 Layout/LineLength:
   Max: 100
 
 Metrics/BlockLength:
   Exclude:
-    - 'specifications/**/*'
+    - 'test/**/*'
+    - 'template/site/**/*'
+    - 'lib/ruby_md_ssg/cli.rb'
+    - 'ruby-md-ssg.gemspec'
 
 Metrics/MethodLength:
   Max: 20
+  Exclude:
+    - 'test/**/*'
+    - 'lib/ruby_md_ssg/cli.rb'
+
+Metrics/AbcSize:
+  Max: 30
+  Exclude:
+    - 'test/**/*'
+    - 'lib/ruby_md_ssg/cli.rb'
+
+Metrics/ClassLength:
+  Max: 160
+
+Metrics/PerceivedComplexity:
+  Max: 8
+  Exclude:
+    - 'lib/ruby_md_ssg/cli.rb'
+    - 'test/**/*'
 
 Style/StringLiterals:
   EnforcedStyle: single_quotes

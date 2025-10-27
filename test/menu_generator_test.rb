@@ -17,8 +17,8 @@ module RubyMdSsg
       generator = MenuGenerator.new(docs_dir: @docs_dir, menu_path: @menu_path)
       generator.generate
 
-      menu = YAML.safe_load(File.read(@menu_path))
-      assert_equal ['Home', 'Ideas'].sort, menu['sections'].map { |section| section['title'] }.sort
+      menu = YAML.safe_load_file(@menu_path)
+      assert_equal %w[Home Ideas].sort, menu['sections'].map { |section| section['title'] }.sort
     end
 
     def test_preserves_existing_order_and_adds_new_links
@@ -41,9 +41,10 @@ module RubyMdSsg
       generator = MenuGenerator.new(docs_dir: @docs_dir, menu_path: @menu_path)
       generator.generate
 
-      menu = YAML.safe_load(File.read(@menu_path))
+      menu = YAML.safe_load_file(@menu_path)
       ideas_links = menu['sections'].first['links']
-      assert_equal ['/ideas/government', '/ideas/participation'], ideas_links.map { |link| link['route'] }
+      expected_routes = %w[/ideas/government /ideas/participation]
+      assert_equal(expected_routes, ideas_links.map { |link| link['route'] })
     end
 
     private
