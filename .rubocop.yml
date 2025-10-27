@@ -37,6 +37,15 @@ Metrics/PerceivedComplexity:
     - 'lib/ruby_md_ssg/cli.rb'
     - 'test/**/*'
 
+Metrics/CyclomaticComplexity:
+  Max: 8
+  Exclude:
+    - 'lib/ruby_md_ssg/cli.rb'
+    - 'lib/ruby_md_ssg/compiler.rb'
+
+Metrics/ParameterLists:
+  Max: 6
+
 Style/StringLiterals:
   EnforcedStyle: single_quotes
 

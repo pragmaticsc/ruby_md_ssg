@@ -18,6 +18,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      RUBY_MD_SSG_BASE_PATH: "/${{ github.event.repository.name }}"
+      RUBY_MD_SSG_BASE_URL: "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
 
     steps:
       - name: Check out repository

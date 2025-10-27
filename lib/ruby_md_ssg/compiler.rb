@@ -2,6 +2,7 @@
 
 require 'fileutils'
 require 'nokogiri'
+require 'uri'
 require_relative 'paths'
 require_relative 'document_finder'
 require_relative 'menu_config'
@@ -16,13 +17,15 @@ module RubyMdSsg
       build_dir: Paths.build_dir,
       assets_dir: Paths.assets_dir,
       menu_path: Paths.menu_config,
-      base_url: nil
+      base_url: nil,
+      base_path: nil
     )
       @docs_dir = docs_dir
       @build_dir = build_dir
       @assets_dir = assets_dir
       @menu_path = menu_path
       @base_url = base_url
+      @base_path = base_path || derive_base_path_from_base_url(base_url)
       @markdown = MarkdownRenderer.new
       @layout = LayoutRenderer.new
       @html_formatter = HtmlFormatter.new
@@ -46,7 +49,7 @@ module RubyMdSsg
     private
 
     attr_reader :docs_dir, :build_dir, :assets_dir, :menu_path,
-                :markdown, :layout, :html_formatter, :base_url
+                :markdown, :layout, :html_formatter, :base_url, :base_path
 
     def purge_build
       FileUtils.rm_rf(build_dir)
@@ -67,7 +70,12 @@ module RubyMdSsg
 
     def render_document(document, menu)
       html_body = markdown.render(document.body_markdown)
-      page = layout.render(document: document, body_html: html_body, menu: menu)
+      page = layout.render(
+        document: document,
+        body_html: html_body,
+        menu: menu,
+        base_path: normalized_base_path
+      )
       page = html_formatter.format(page)
       output_path = document.output_path
       FileUtils.mkdir_p(File.dirname(output_path))
@@ -106,10 +114,39 @@ module RubyMdSsg
 
     def sitemap_location_for(route)
       normalized_route = route == '/' ? '/' : route
-      return normalized_route if base_url.nil? || base_url.empty?
+      return route_with_base_path(route) if base_url.nil? || base_url.empty?
 
       normalized_base = base_url.end_with?('/') ? base_url.chomp('/') : base_url
       normalized_base + normalized_route
+    end
+
+    def route_with_base_path(route)
+      return '/' if normalized_base_path.empty? && (route.nil? || route == '/')
+      return normalized_base_path if !normalized_base_path.empty? && (route.nil? || route == '/')
+
+      tail = route.delete_prefix('/')
+      normalized_base_path.empty? ? "/#{tail}" : "#{normalized_base_path}/#{tail}"
+    end
+
+    def derive_base_path_from_base_url(url)
+      return nil if url.nil? || url.empty?
+
+      uri = URI.parse(url)
+      path = uri.path
+      path == '/' ? nil : path
+    rescue URI::InvalidURIError
+      nil
+    end
+
+    def normalized_base_path
+      @normalized_base_path ||= normalize_base_path(base_path)
+    end
+
+    def normalize_base_path(path)
+      return '' if path.nil? || path.empty? || path == '/'
+
+      normalized = path.start_with?('/') ? path : "/#{path}"
+      normalized.chomp('/')
     end
   end
 end

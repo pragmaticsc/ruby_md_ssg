@@ -100,7 +100,8 @@ module RubyMdSsg
         build_dir: options[:build],
         assets_dir: options[:assets],
         menu_path: options[:menu],
-        base_url: options[:base_url]
+        base_url: options[:base_url],
+        base_path: options[:base_path]
       )
       compiler.compile
     end
@@ -137,6 +138,13 @@ module RubyMdSsg
           options[:assets] = File.expand_path(path)
         end
         opts.on(
+          '--base-path PATH',
+          'Base path prefix for links/assets',
+          'defaults to ENV RUBY_MD_SSG_BASE_PATH'
+        ) do |path|
+          options[:base_path] = path
+        end
+        opts.on(
           '--base-url URL',
           'Base URL for sitemap entries (defaults to ENV RUBY_MD_SSG_BASE_URL)'
         ) do |url|
@@ -164,6 +172,7 @@ module RubyMdSsg
       options[:build] ||= RubyMdSsg::Paths.build_dir
       options[:menu] ||= RubyMdSsg::Paths.menu_config
       options[:assets] ||= RubyMdSsg::Paths.assets_dir
+      options[:base_path] ||= ENV.fetch('RUBY_MD_SSG_BASE_PATH', nil)
       options[:base_url] ||= ENV.fetch('RUBY_MD_SSG_BASE_URL', nil)
       options.delete_if { |_key, value| value.nil? }
     end

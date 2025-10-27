@@ -7,8 +7,8 @@
     <% if meta_description && !meta_description.empty? %>
       <meta name="description" content="<%= meta_description %>" />
     <% end %>
-    <link rel="stylesheet" href="/assets/style.css" />
-    <script defer src="/assets/app.js"></script>
+    <link rel="stylesheet" href="<%= helpers.asset_path('style.css') %>" />
+    <script defer src="<%= helpers.asset_path('app.js') %>"></script>
   </head>
   <body>
     <div class="layout">
@@ -24,7 +24,7 @@
               <ul>
                 <% section.links.each do |link| %>
                   <li>
-                    <a href="<%= link.route %>"><%= link.label %></a>
+                    <a href="<%= helpers.route_path(link.route) %>"><%= link.label %></a>
                   </li>
                 <% end %>
               </ul>

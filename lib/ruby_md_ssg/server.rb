@@ -22,7 +22,8 @@ module RubyMdSsg
           auto_build: true,
           watch: true,
           interval: 1.0,
-          base_url: ENV.fetch('RUBY_MD_SSG_BASE_URL', nil)
+          base_url: ENV.fetch('RUBY_MD_SSG_BASE_URL', nil),
+          base_path: ENV.fetch('RUBY_MD_SSG_BASE_PATH', nil)
         }
       end
     end
@@ -51,7 +52,8 @@ module RubyMdSsg
         build_dir: options[:build],
         assets_dir: options[:assets],
         menu_path: options[:menu],
-        base_url: options[:base_url]
+        base_url: options[:base_url],
+        base_path: options[:base_path]
       )
       compiler.compile
       puts "[#{timestamp}] Build complete."
