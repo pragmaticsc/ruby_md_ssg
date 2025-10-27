@@ -15,12 +15,12 @@ end
 
 desc 'Build the static site'
 task :build do
-  sh 'bundle exec ruby exe/static_ruby build'
+  sh 'bundle exec ruby exe/ruby_md_ssg build'
 end
 
 desc 'Serve the static site'
 task :serve do
-  sh 'bundle exec ruby exe/static_ruby serve'
+  sh 'bundle exec ruby exe/ruby_md_ssg serve'
 end
 
 task default: :test

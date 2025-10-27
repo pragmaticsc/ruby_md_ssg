@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'fileutils'
+require 'nokogiri'
 require_relative 'paths'
 require_relative 'document_finder'
 require_relative 'menu_config'
@@ -10,11 +11,12 @@ require_relative 'html_formatter'
 
 module RubyMdSsg
   class Compiler
-    def initialize(docs_dir: Paths.docs_dir, build_dir: Paths.build_dir, assets_dir: Paths.assets_dir, menu_path: Paths.menu_config)
+    def initialize(docs_dir: Paths.docs_dir, build_dir: Paths.build_dir, assets_dir: Paths.assets_dir, menu_path: Paths.menu_config, base_url: nil)
       @docs_dir = docs_dir
       @build_dir = build_dir
       @assets_dir = assets_dir
       @menu_path = menu_path
+      @base_url = base_url
       @markdown = MarkdownRenderer.new
       @layout = LayoutRenderer.new
       @html_formatter = HtmlFormatter.new
@@ -32,11 +34,12 @@ module RubyMdSsg
       end
 
       copy_assets
+      generate_sitemap(documents)
     end
 
     private
 
-    attr_reader :docs_dir, :build_dir, :assets_dir, :menu_path, :markdown, :layout, :html_formatter
+    attr_reader :docs_dir, :build_dir, :assets_dir, :menu_path, :markdown, :layout, :html_formatter, :base_url
 
     def purge_build
       FileUtils.rm_rf(build_dir)
@@ -75,6 +78,31 @@ module RubyMdSsg
 
       destination = File.join(build_dir, 'assets', filename)
       FileUtils.cp(source, destination)
+    end
+
+    def generate_sitemap(documents)
+      return if documents.empty?
+
+      builder = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
+        xml.urlset('xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9') do
+      documents.each do |document|
+        xml.url do
+          xml.loc sitemap_location_for(document.route)
+          xml.lastmod document.last_modified.utc.iso8601
+        end
+      end
+        end
+      end
+
+      File.write(File.join(build_dir, 'sitemap.xml'), builder.to_xml)
+    end
+
+    def sitemap_location_for(route)
+      normalized_route = route == '/' ? '/' : route
+      return normalized_route if base_url.nil? || base_url.empty?
+
+      normalized_base = base_url.end_with?('/') ? base_url.chomp('/') : base_url
+      normalized_base + normalized_route
     end
   end
 end

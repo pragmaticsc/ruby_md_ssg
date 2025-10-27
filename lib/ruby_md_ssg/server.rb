@@ -21,7 +21,8 @@ module RubyMdSsg
           menu: Paths.menu_config,
           auto_build: true,
           watch: true,
-          interval: 1.0
+          interval: 1.0,
+          base_url: ENV['RUBY_MD_SSG_BASE_URL']
         }
       end
     end
@@ -49,7 +50,8 @@ module RubyMdSsg
         docs_dir: options[:docs],
         build_dir: options[:build],
         assets_dir: options[:assets],
-        menu_path: options[:menu]
+        menu_path: options[:menu],
+        base_url: options[:base_url]
       )
       compiler.compile
       puts "[#{timestamp}] Build complete."

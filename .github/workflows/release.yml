@@ -31,7 +31,7 @@ jobs:
 
       - name: Build gem
         run: |
-          gem build static_ruby.gemspec
+          gem build ruby-md-ssg.gemspec
 
       - name: Publish to RubyGems
         env:
@@ -43,4 +43,4 @@ jobs:
           :rubygems_api_key: ${RUBYGEMS_API_KEY}
           CREDENTIALS
           chmod 0600 ~/.gem/credentials
-          gem push static_ruby-*.gem
+          gem push ruby-md-ssg-*.gem

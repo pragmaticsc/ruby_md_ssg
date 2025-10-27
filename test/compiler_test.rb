@@ -64,6 +64,11 @@ module RubyMdSsg
       assert_equal 1, index_html.scan('<h1').count
       assert File.exist?(File.join(@build_dir, 'assets', 'style.css'))
       assert File.exist?(File.join(@build_dir, 'assets', 'app.js'))
+
+      sitemap = File.read(File.join(@build_dir, 'sitemap.xml'))
+      assert_includes sitemap, '<loc>https://example.test/</loc>'
+      assert_includes sitemap, '<loc>https://example.test/ideas/story</loc>'
+      assert_includes sitemap, '<lastmod>'
     end
 
     private
@@ -74,7 +79,8 @@ module RubyMdSsg
           docs_dir: @docs_dir,
           build_dir: @build_dir,
           assets_dir: @assets_dir,
-          menu_path: File.join(@docs_dir, 'menu.yml')
+          menu_path: File.join(@docs_dir, 'menu.yml'),
+          base_url: 'https://example.test'
         )
         compiler.compile
       end

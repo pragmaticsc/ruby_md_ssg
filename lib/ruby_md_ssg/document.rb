@@ -52,6 +52,10 @@ module RubyMdSsg
       @content ||= File.read(source_path)
     end
 
+    def last_modified
+      File.mtime(source_path)
+    end
+
     def meta_description
       @meta_description ||= begin
         value = frontmatter['description'] || frontmatter['meta_description']

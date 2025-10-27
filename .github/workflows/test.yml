@@ -19,5 +19,8 @@ jobs:
           ruby-version: '3.3'
           bundler-cache: true
 
+      - name: Run RuboCop
+        run: bundle exec rubocop
+
       - name: Run test suite
         run: bundle exec ruby bin/test

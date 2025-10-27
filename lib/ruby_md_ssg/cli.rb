@@ -41,11 +41,11 @@ module RubyMdSsg
 
     def usage
       <<~TEXT
-        Usage: static_ruby <command> [options]
+        Usage: ruby_md_ssg <command> [options]
 
         Commands:
           new NAME           # Scaffold a new Ruby MD SSG project
-          build              # Generate the site into the build directory
+          build              # Generate the site into the build directory (writes sitemap.xml)
           serve              # Serve the site locally with rebuilds
           menu               # Regenerate docs/menu.yml from docs/
           version            # Show gem version
@@ -55,7 +55,7 @@ module RubyMdSsg
     def handle_new(args)
       options = { path: nil }
       parser = OptionParser.new do |opts|
-        opts.banner = 'Usage: static_ruby new NAME [options]'
+        opts.banner = 'Usage: ruby_md_ssg new NAME [options]'
         opts.on('-pPATH', '--path=PATH', 'Target directory (defaults to NAME)') { |path| options[:path] = File.expand_path(path) }
       end
       parser.parse!(args)
@@ -84,7 +84,8 @@ module RubyMdSsg
         docs_dir: options[:docs],
         build_dir: options[:build],
         assets_dir: options[:assets],
-        menu_path: options[:menu]
+        menu_path: options[:menu],
+        base_url: options[:base_url]
       )
       compiler.compile
     end
@@ -112,6 +113,7 @@ module RubyMdSsg
         opts.on('--build PATH', 'Build output directory') { |path| options[:build] = File.expand_path(path) }
         opts.on('--menu PATH', 'Menu configuration path') { |path| options[:menu] = File.expand_path(path) }
         opts.on('--assets PATH', 'Assets directory') { |path| options[:assets] = File.expand_path(path) }
+        opts.on('--base-url URL', 'Base URL for sitemap entries (default: ENV RUBY_MD_SSG_BASE_URL)') { |url| options[:base_url] = url }
         opts.on('--port PORT', Integer, 'Port for serve command (default: 4000)') { |port| options[:port] = port }
         opts.on('--[no-]auto-build', 'Serve only: build before starting (default: true)') { |flag| options[:auto_build] = flag }
         opts.on('--[no-]watch', 'Serve only: watch for changes (default: true)') { |flag| options[:watch] = flag }
@@ -123,6 +125,7 @@ module RubyMdSsg
       options[:build] ||= RubyMdSsg::Paths.build_dir
       options[:menu] ||= RubyMdSsg::Paths.menu_config
       options[:assets] ||= RubyMdSsg::Paths.assets_dir
+      options[:base_url] ||= ENV['RUBY_MD_SSG_BASE_URL']
       options.delete_if { |_key, value| value.nil? }
     end
 
